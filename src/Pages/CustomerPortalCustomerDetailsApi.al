@@ -81,6 +81,11 @@ page 70105 "CP Customer Details API"
                 {
                     Caption = 'Sales (LCY)';
                 }
+
+                field(currencyCode; Rec."Currency Code")
+                {
+                    Caption = 'Currency Code';
+                }
             }
         }
     }

@@ -1,14 +1,14 @@
-page 70106 "CP Sales Invoices API"
+page 70112 "CP Sales Credit Memos API"
 {
     PageType = API;
-    Caption = 'Sales Invoices API';
+    Caption = 'Sales Credit Memos API';
     APIPublisher = 'cp';
     APIGroup = 'portal';
     APIVersion = 'v1.0';
-    EntityName = 'portalSalesInvoice';
-    EntitySetName = 'portalSalesInvoices';
+    EntityName = 'portalSalesCreditMemo';
+    EntitySetName = 'portalSalesCreditMemos';
 
-    SourceTable = "Sales Invoice Header";
+    SourceTable = "Sales Cr.Memo Header";
     ODataKeyFields = SystemId;
 
     InsertAllowed = false;
@@ -67,36 +67,11 @@ page 70106 "CP Sales Invoices API"
                     Caption = 'Currency Code';
                 }
 
-                field(remainingAmount; RemainingAmount)
+                field(remainingAmount; Rec."Remaining Amount")
                 {
                     Caption = 'Remaining Amount';
-                }
-
-                field(isPaid; IsPaid)
-                {
-                    Caption = 'Is Paid';
                 }
             }
         }
     }
-
-    var
-        RemainingAmount: Decimal;
-        IsPaid: Boolean;
-
-    trigger OnAfterGetRecord()
-    var
-        CustLedgerEntry: Record "Cust. Ledger Entry";
-    begin
-        RemainingAmount := 0;
-        IsPaid := true;
-
-        CustLedgerEntry.SetRange("Document Type", CustLedgerEntry."Document Type"::Invoice);
-        CustLedgerEntry.SetRange("Document No.", Rec."No.");
-        if CustLedgerEntry.FindFirst() then begin
-            CustLedgerEntry.CalcFields("Remaining Amount");
-            RemainingAmount := CustLedgerEntry."Remaining Amount";
-            IsPaid := not CustLedgerEntry.Open;
-        end;
-    end;
 }
